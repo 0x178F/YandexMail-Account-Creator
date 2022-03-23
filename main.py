@@ -2,7 +2,6 @@ import threading, time
 from base.YandexRegister import YandexRegister
 from colorama import Fore
 from utils.Helper import connect_device, device_mobile_data, new_account
-from utils._2captcha import TwoCaptcha
 
 print(Fore.LIGHTBLUE_EX + "===============================")
 print("      Yandex Creator Bot       ")
@@ -66,15 +65,13 @@ def main():
         account_info = new_account()
         if not account_info: break
         
-        twoCaptcha = TwoCaptcha(account_info['api_key'])
-        
         Bot = YandexRegister(account_info['firstname'],
                             account_info['lastname'],
                             account_info['mail'],
                             account_info['password'], 
                             account_info['secret_question'],
                             account_info['secret_answer'],
-                            twoCaptcha
+                            account_info['obj_captcha']
                             )
         botStart = Bot.start(choose_creator_type, choose_ip_method)
         

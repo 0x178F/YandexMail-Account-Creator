@@ -21,6 +21,7 @@ Edit the settings.json file.
 
 |Config|Usage|
 | :------------: | :------------: |
+|captcha_service| "twocaptcha" for 2Captcha, "capmonster" for CapMonster|
 |api_key|2Captcha API key you will use to solve captcha|
 |secret_question|secret question to be created when registering|
 |secret_answer|secret answer to be created when registering|

@@ -37,7 +37,7 @@ class TwoCaptcha():
             response = response.json()
             if 'ERROR_ZERO_BALANCE' in response['request']:
                 print('2CAPTCHA: ERROR_ZERO_BALANCE')
-                return False
+                quit()
             return response['request']
         else:
             return False

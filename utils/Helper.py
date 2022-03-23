@@ -4,6 +4,8 @@ import subprocess
 import time
 import requests
 from colorama import Fore
+from utils._2captcha import TwoCaptcha
+from utils.Capmonster import CapMonster
 from ppadb.client import Client as AdbClient
 path = os.getcwd()
 def connect_device():
@@ -118,6 +120,16 @@ def new_account():
         print(Fore.LIGHTRED_EX + "api_key is wrong." + Fore.RESET)
         return False
     
+    captcha_service = settings['captcha_service']
+    if not captcha_service:
+        print(Fore.LIGHTRED_EX + "captcha_service is wrong." + Fore.RESET)
+        return False
+    
+    if captcha_service == "twocaptcha":
+        captcha = TwoCaptcha(api_key)
+    elif captcha_service == "capmonster":
+        captcha = CapMonster(api_key)
+        
     secret_question = settings['secret_question']
     if not secret_question:
         print(Fore.LIGHTRED_EX + "secret_question is wrong." + Fore.RESET)
@@ -127,7 +139,7 @@ def new_account():
     if not secret_answer:
         print(Fore.LIGHTRED_EX + "secret_answer is wrong." + Fore.RESET)
         return False
-    
+
     return {
         'firstname':first_name,
         'lastname':last_name,
@@ -135,5 +147,5 @@ def new_account():
         'password':generate_password(8),
         'secret_question' : secret_question,
         'secret_answer' : secret_answer,
-        'api_key': api_key
+        'obj_captcha': captcha
         }

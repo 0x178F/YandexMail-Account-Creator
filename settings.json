@@ -1,5 +1,6 @@
 {
-    "api_key": "30x48e1cb68b1b7dd72331a26f3df",
+    "captcha_service": "capmonster",
+    "api_key": "9dkekekc63d00c3c7255c50027dd54",
     "secret_question": "question",
     "secret_answer": "answer"
 }

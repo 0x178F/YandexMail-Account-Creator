@@ -8,9 +8,9 @@ lock = threading.Lock()
 class YandexRegister(YandexRequests):
     proxy_status = True
     
-    def __init__(self, firstname, lastname, mail, password, secret_question, secret_answer, twoCaptcha):
+    def __init__(self, firstname, lastname, mail, password, secret_question, secret_answer, Captcha):
         super().__init__(firstname, lastname, mail, password, secret_question, secret_answer,)
-        self.twoCaptcha = twoCaptcha
+        self.Captcha = Captcha
         
     def set_proxy(self):
         with lock:
@@ -54,21 +54,21 @@ class YandexRegister(YandexRequests):
                 continue
         
             print("[Yandex] - captcha solving.")
-            captcha_answer = self.twoCaptcha.solve(yandexCaptcha_url)
-            
+            captcha_answer = self.Captcha.solve(yandexCaptcha_url)
+            if type(captcha_answer) is tuple:
+                captcha_id, captcha_answer = captcha_answer
+                
             if not captcha_answer:
                 print("[Yandex] - captcha not solved.")
                 err_counter += 1
                 continue
             
-            captcha_id, captcha_answer = self.twoCaptcha.solve(yandexCaptcha_url)
-            if not captcha_answer: return False
-            
             print("[Yandex] - captcha check pending.")
             check_answer = super().check_solved_captcha(captcha_answer)
             if not check_answer: #captcha hatalı mesajı gönder. bakiye için.
                 print(Fore.LIGHTRED_EX + "[Yandex] - captcha failed." + Fore.RESET)
-                self.twoCaptcha.report_captcha(captcha_id)
+                if type(captcha_answer) is tuple:
+                    self.Captcha.report_captcha(captcha_id)
                 err_counter += 1
                 continue
             print("[Yandex] - captcha successful.")
